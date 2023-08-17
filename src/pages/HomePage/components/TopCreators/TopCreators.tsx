@@ -1,7 +1,5 @@
-import React from 'react'
+import React from 'react';
 
 export const TopCreators = () => {
-  return (
-    <div>TopCreators</div>
-  )
-}
+  return <div>TopCreators</div>;
+};

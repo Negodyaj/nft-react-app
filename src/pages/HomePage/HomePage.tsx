@@ -1,4 +1,3 @@
-
 import './HomePage.scss';
 import { Categories } from './components/Categories/Categories';
 import { HeroSection } from './components/HeroSection/HeroSection';
@@ -12,4 +11,4 @@ export const HomePage = () => {
       <Categories />
     </>
   );
-}
+};

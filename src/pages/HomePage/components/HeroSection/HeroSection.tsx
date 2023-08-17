@@ -1,5 +1,5 @@
-import React from "react";
 import './HeroSection.scss';
+import React from 'react';
 
 export const HeroSection = () => {
   return (
@@ -9,10 +9,7 @@ export const HeroSection = () => {
           Discover <br />
           digital art & Collect NFTs
         </h1>
-        <p>
-          NFT marketplace UI created with Anima for Figma. Collect, buy and sell
-          art from more than 20k NFT artists.
-        </p>
+        <p>NFT marketplace UI created with Anima for Figma. Collect, buy and sell art from more than 20k NFT artists.</p>
         <a href="index.html" className="btn fill">
           Get Started
         </a>
@@ -26,11 +23,7 @@ export const HeroSection = () => {
         </div>
       </div>
       <div className="hero-card">
-        <img
-          src="./assets/hero-card-image.png"
-          className="hero-card-image"
-          alt=""
-        />
+        <img src="./assets/hero-card-image.png" className="hero-card-image" alt="" />
         <div className="card-content">
           <div className="card-title">Space Walking</div>
           <div className="card-author">

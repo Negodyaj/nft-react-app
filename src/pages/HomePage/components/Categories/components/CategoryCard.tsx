@@ -1,4 +1,4 @@
-import './CategoryCard.scss'
+import './CategoryCard.scss';
 
 interface CategoryCardProps {
   background: string;
