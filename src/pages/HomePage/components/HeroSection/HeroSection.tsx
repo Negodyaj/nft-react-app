@@ -1,9 +1,14 @@
 import './HeroSection.scss';
 import React from 'react';
 
-export const HeroSection = () => {
+interface HeroSectionProps {
+  clickHandler: (data: number) => void;
+}
+
+export const HeroSection = (props: HeroSectionProps) => {
   return (
     <section id="hero" className="container">
+      <button onClick={() => props.clickHandler(42)}>send data</button>
       <div className="hero-content">
         <h1>
           Discover <br />

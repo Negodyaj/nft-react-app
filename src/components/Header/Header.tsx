@@ -1,15 +1,23 @@
 import './Header.scss';
 import { NavigationLink } from '../NavigationLink/NavigationLink';
+import { selectCartItemsCount, selectCartItemsSum } from '../../pages/CartPage/cartPageSlice';
+import { useSelector } from 'react-redux';
 import React from 'react';
 import burgerMenu from './assets/BurgerMenu.svg';
 import logo from './assets/logo.png';
 
 export const Header = () => {
+  const itemsCount = useSelector(selectCartItemsCount);
+  const itemsSum = useSelector(selectCartItemsSum);
+
   const toggleNavVisibility = () => {};
 
   return (
     <header>
       <img src={logo} className="logo" alt="NFT Marketplace logo" />
+      <div>
+        В корзине: {itemsCount} товаров на {itemsSum} деняг
+      </div>
       <nav>
         <NavigationLink url="market" name="Marketplace" />
         <NavigationLink url={'rankings'} name={'Rankings'} />

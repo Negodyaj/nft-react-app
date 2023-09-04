@@ -16,6 +16,7 @@ import paintBrush from './assets/icons/PaintBrush.svg';
 import planet from './assets/icons/Planet.svg';
 import swatches from './assets/icons/Swatches.svg';
 import videoCamera from './assets/icons/VideoCamera.svg';
+import { useState } from 'react';
 
 const categories: Category[] = [
   {
@@ -76,23 +77,33 @@ interface Category {
 }
 
 export const Categories = () => {
+  const [index, setIndex] = useState(1);
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+
+  const increase = () => {
+    setIndex(index + 1);
+  };
+  const decrease = () => {
+    setIndex(index - 1);
+  };
+
   return (
     <section className="container">
+      <h1>{index}</h1>
       <div className="carousel-wrapper">
-        <button
-          className="carousel-btn left disabled"
-          // onclick="doLeftSlide()"
-        >
+        <button className="carousel-btn left" onClick={decrease}>
           {'<-'}
         </button>
-        <button
-          className="carousel-btn right"
-          // onclick="doRightSlide()"
-        >
+        <button className="carousel-btn right" onClick={increase}>
           {'->'}
         </button>
         <div className="categories-grid">
           {categories.map((item) => (
+            <CategoryCard key={`category-${item.id}`} background={item.background} icon={item.icon} name={item.name} />
+          ))}
+        </div>
+        <div className="categories-grid">
+          {selectedCategories.map((item) => (
             <CategoryCard key={`category-${item.id}`} background={item.background} icon={item.icon} name={item.name} />
           ))}
         </div>
