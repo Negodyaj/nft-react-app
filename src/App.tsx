@@ -1,3 +1,4 @@
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import './App.scss';
 import { Header } from './components/Header/Header';
 import { HomePage } from './pages/HomePage/HomePage';
@@ -5,46 +6,82 @@ import { LoginPage } from './pages/LoginPage/LoginPage';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { Route, Routes } from 'react-router-dom';
-import React from 'react';
-import { Product } from './models/product';
-import { useDispatch } from 'react-redux';
-import { addToCart } from './pages/CartPage/cartPageSlice';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import Select from 'react-select';
+import { useState } from 'react';
 
-const items: Product[] = [
-  {
-    id: 1,
-    count: 1,
-    name: 'Сосисочка',
-    price: 220,
-  },
-  {
-    id: 2,
-    count: 1,
-    name: 'Хлебушек',
-    price: 50,
-  },
-  {
-    id: 1,
-    count: 1,
-    name: 'Кетчуп',
-    price: 80,
-  },
-];
+const schema = yup
+  .object({
+    login: yup.string().required(),
+    password: yup.string().required('введите пароль').min(5, 'пароль должен быть длиннее 4 символов'),
+    repeatPassword: yup
+      .string()
+      .required('повторите пароль')
+      .min(5, 'пароль должен быть длиннее 4 символов')
+      .oneOf([yup.ref('password'), ''], 'пароли должны совпадать'),
+    select: yup.object(),
+  })
+  .required();
+type FormData = yup.InferType<typeof schema>;
 
 export const App = () => {
-  const dispatch = useDispatch();
+  const [formResult, setFormResult] = useState('');
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+  });
+  const onSubmit: SubmitHandler<FormData> = (data) =>
+    fetch('http://194.87.210.5:5000/api/v1/', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => response.json())
+      .then((dataFromBack) => setFormResult(dataFromBack));
 
   return (
     <div className="App">
       <Header />
 
-      {items.map((item) => (
-        <div key={`item-${item.id}`}>
-          <div>{item.name}</div>
-          <div>{item.price}</div>
-          <button onClick={() => dispatch(addToCart(item))}>В корзину</button>
-        </div>
-      ))}
+      {formResult && <div>данные получены! спасибули ^__^</div>}
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label>
+          Логин:
+          <input type="text" {...register('login')} />
+        </label>
+        {errors.login && <span>{errors.login.message}</span>}
+        <label>
+          Пароль:
+          <input type="password" {...register('password')} />
+        </label>
+        {errors.password && <span>{errors.password.message}</span>}
+        <label>
+          Повторите пароль:
+          <input type="password" {...register('repeatPassword')} />
+        </label>
+        {errors.repeatPassword && <span>{errors.repeatPassword.message}</span>}
+        <Controller
+          name="select"
+          control={control}
+          render={({ field }) => (
+            <Select
+              {...field}
+              options={[
+                { value: 'chocolate', label: 'Chocolate' },
+                { value: 'strawberry', label: 'Strawberry' },
+                { value: 'vanilla', label: 'Vanilla' },
+              ]}
+            />
+          )}
+        />
+        <button type="submit">Впустити миня!!</button>
+      </form>
 
       <br />
       <hr />
